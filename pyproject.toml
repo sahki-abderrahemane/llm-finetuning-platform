@@ -1,0 +1,110 @@
+[build-system]
+requires = ["hatchling>=1.27"]
+build-backend = "hatchling.build"
+
+[project]
+name = "mentorai-finetuning"
+version = "0.1.0"
+description = "End-to-end domain-specific LLM fine-tuning pipeline for MentorAI."
+readme = "README.md"
+requires-python = ">=3.12"
+license = { text = "MIT" }
+
+authors = [
+    { name = "Abderrahemane Sahki" }
+]
+
+keywords = [
+    "llm",
+    "fine-tuning",
+    "lora",
+    "qlora",
+    "transformers",
+    "mentorai",
+    "huggingface",
+    "deep-learning",
+    "machine-learning"
+]
+
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.12",
+    "Operating System :: OS Independent",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence"
+]
+
+dependencies = [
+    "loguru>=0.7.3",
+    "omegaconf>=2.3.0",
+    "pydantic>=2.11.7",
+    "pydantic-settings>=2.10.1",
+    "python-dotenv>=1.1.1",
+    "rich>=14.0.0",
+    "tqdm>=4.67.1"
+]
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/mentorai_finetuning"]
+
+[dependency-groups]
+
+training = [
+    "accelerate>=1.8.1",
+    "bitsandbytes>=0.46.0",
+    "datasets>=3.6.0",
+    "peft>=0.16.0",
+    "safetensors>=0.5.3",
+    "sentencepiece>=0.2.0",
+    "torch>=2.7.1",
+    "torchvision>=0.22.1",
+    "transformers>=4.53.0",
+    "trl>=0.19.0"
+]
+
+evaluation = [
+    "bert-score>=0.3.13",
+    "evaluate>=0.4.5",
+    "matplotlib>=3.10.3",
+    "numpy>=2.2.6",
+    "pandas>=2.3.0",
+    "rouge-score>=0.1.2",
+    "sacrebleu>=2.5.1",
+    "scikit-learn>=1.7.0"
+]
+
+inference = [
+    "fastapi>=0.116.0",
+    "uvicorn>=0.35.0"
+]
+
+dev = [
+    "mypy>=1.16.1",
+    "pre-commit>=4.2.0",
+    "pytest>=8.4.1",
+    "pytest-cov>=6.2.1",
+    "ruff>=0.12.2"
+]
+
+[tool.ruff]
+line-length = 100
+target-version = "py312"
+
+[tool.ruff.lint]
+select = [
+    "E",
+    "F",
+    "I",
+    "UP",
+    "B"
+]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+
+[tool.mypy]
+python_version = "3.12"
+strict = true
+warn_unused_configs = true
+warn_unused_ignores = true
+ignore_missing_imports = true
