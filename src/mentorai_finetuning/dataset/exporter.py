@@ -1,76 +1,57 @@
+
 """
-Canonical dataset schema used throughout the MentorAI fine-tuning pipeline.
+Dataset export utilities.
+
 """
 
 from __future__ import annotations
 
-from enum import Enum
-from typing import Any
+import json
+from pathlib import Path
 
-from pydantic import BaseModel, ConfigDict, Field
-
-
-class MessageRole(str, Enum):
-    """Supported conversation roles."""
-
-    SYSTEM = "system"
-    USER = "user"
-    ASSISTANT = "assistant"
-    TOOL = "tool"
+from mentorai_finetuning.dataset.schema import DatasetSample
 
 
-class Message(BaseModel):
-    """A single message within a conversation."""
+class DatasetExporter:
+    """Exports processed datasets."""
 
-    role: MessageRole
-    content: str = Field(..., min_length=1)
+    def export_json(
+        self,
+        samples: list[DatasetSample],
+        output_path: str | Path,
+    ) -> None:
+        """
+        Export the dataset as a JSON file.
+        """
 
-    model_config = ConfigDict(
-        extra="forbid",
-        frozen=True,
-    )
+        output_path = Path(output_path)
+        output_path.parent.mkdir(parents=True, exist_ok=True)
 
+        with output_path.open("w", encoding="utf-8") as file:
+            json.dump(
+                [sample.model_dump() for sample in samples],
+                file,
+                indent=2,
+                ensure_ascii=False,
+            )
 
-class DatasetMetadata(BaseModel):
-    """Optional metadata associated with a dataset sample."""
+    def export_jsonl(
+        self,
+        samples: list[DatasetSample],
+        output_path: str | Path,
+    ) -> None:
+        """
+        Export the dataset as a JSONL file.
+        """
 
-    source: str | None = None
-    language: str | None = None
-    domain: str | None = None
-    license: str | None = None
-    tags: list[str] = Field(default_factory=list)
-    quality_score: float | None = None
+        output_path = Path(output_path)
+        output_path.parent.mkdir(parents=True, exist_ok=True)
 
-    model_config = ConfigDict(extra="allow")
-
-
-class DatasetSample(BaseModel):
-    """
-    Canonical representation of a single training sample.
-
-    Every supported dataset format is converted into this schema before
-    entering the preprocessing and training pipeline.
-    """
-
-    id: str
-
-    messages: list[Message] = Field(
-        ...,
-        min_length=1,
-        description="Conversation messages in chronological order.",
-    )
-
-    metadata: DatasetMetadata = Field(default_factory=DatasetMetadata)
-
-    model_config = ConfigDict(extra="forbid")
-
-
-class Dataset(BaseModel):
-    """A collection of dataset samples."""
-
-    samples: list[DatasetSample]
-
-    model_config = ConfigDict(extra="forbid")
-
-
-DatasetDict = dict[str, Any]
+        with output_path.open("w", encoding="utf-8") as file:
+            for sample in samples:
+                json.dump(
+                    sample.model_dump(),
+                    file,
+                    ensure_ascii=False,
+                )
+                file.write("\n")

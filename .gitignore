@@ -84,6 +84,7 @@ models/checkpoints/*
 models/adapters/*
 models/merged/*
 models/exported/*
+models/
 
 !models/base/.gitkeep
 !models/checkpoints/.gitkeep
