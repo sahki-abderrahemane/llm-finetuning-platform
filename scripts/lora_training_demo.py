@@ -6,6 +6,7 @@ from __future__ import annotations
 
 from pathlib import Path
 
+from mentorai_finetuning.common.config import get_settings
 from mentorai_finetuning.lora.config import LoRAConfig
 from mentorai_finetuning.lora.loader import LoRALoader
 from mentorai_finetuning.lora.merger import LoRAMerger
@@ -54,7 +55,7 @@ def main() -> None:
     print("=" * 70)
 
     training_config = TrainingConfig(
-        model_name="Qwen/Qwen2.5-0.5B-Instruct",
+        model_name=get_settings().MODEL_NAME,
         output_dir=Path("models/lora-demo"),
     )
 

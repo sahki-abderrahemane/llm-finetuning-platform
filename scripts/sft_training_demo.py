@@ -31,7 +31,9 @@ from mentorai_finetuning.training.trainer import (
 from mentorai_finetuning.training.trainer_factory import (
     TrainerFactory,
 )
-
+from mentorai_finetuning.common.config import (
+    get_settings,
+)
 
 def create_dataset() -> list[DatasetSample]:
     return [
@@ -81,7 +83,7 @@ def main() -> None:
     )
 
     config = TrainingConfig(
-        model_name="Qwen/Qwen2.5-0.5B-Instruct",
+        model_name=get_settings().MODEL_NAME,
         output_dir=output_dir,
         epochs=1,
         train_batch_size=1,

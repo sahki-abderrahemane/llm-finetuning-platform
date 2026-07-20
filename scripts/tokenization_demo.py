@@ -6,6 +6,7 @@ from __future__ import annotations
 
 from pprint import pprint
 
+from mentorai_finetuning.common.config import get_settings
 from mentorai_finetuning.dataset.schema import (
     DatasetSample,
     Message,
@@ -23,7 +24,7 @@ from mentorai_finetuning.tokenization.tokenizer_wrapper import TokenizerWrapper
 
 def build_pipeline() -> tuple[TokenizationPipeline, TokenizerWrapper]:
     config = TokenizerConfig(
-        model_name="Qwen/Qwen2.5-0.5B-Instruct",
+        model_name=get_settings().MODEL_NAME,
     )
 
     tokenizer = TokenizerFactory.create(config)

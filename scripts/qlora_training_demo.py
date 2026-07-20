@@ -52,6 +52,9 @@ from mentorai_finetuning.training.trainer_factory import (
 from mentorai_finetuning.common.device import (
     DeviceDetector,
 )
+from mentorai_finetuning.common.config import (
+    get_settings,
+)
 
 def create_dataset() -> list[DatasetSample]:
     return [
@@ -107,7 +110,7 @@ def main() -> None:
     DeviceDetector.print_summary(device)
 
     training_config = TrainingConfig(
-    model_name="Qwen/Qwen2.5-0.5B-Instruct",
+    model_name=get_settings().MODEL_NAME,
     output_dir=output_dir,
     epochs=1,
     train_batch_size=1,

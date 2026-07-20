@@ -5,6 +5,8 @@ from __future__ import annotations
 
 import multiprocessing as mp
 
+from mentorai_finetuning.common.config import get_settings
+
 
 
 def main() -> None:
@@ -18,10 +20,10 @@ def main() -> None:
 
 
     config = DeploymentConfig(
-        model_name="Qwen/Qwen2.5-0.5B-Instruct",
-        max_new_tokens=128,
-        temperature=0.7,
-        top_p=0.95,
+        model_name=get_settings().MODEL_NAME,
+        max_new_tokens=get_settings().MAX_NEW_TOKENS,
+        temperature=get_settings().TEMPERATURE,
+        top_p=get_settings().TOP_P,
     )
 
     print("=" * 80)
