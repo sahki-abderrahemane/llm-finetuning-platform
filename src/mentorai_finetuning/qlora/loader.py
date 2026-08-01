@@ -31,6 +31,7 @@ class QLoRAModelLoader:
 
     def load(
         self,
+        tokenizer: PreTrainedTokenizerBase | None = None,
     ) -> tuple[
         PreTrainedModel,
         PreTrainedTokenizerBase,
@@ -38,16 +39,24 @@ class QLoRAModelLoader:
         """
         Load the model and tokenizer using BitsAndBytes
         quantization.
+
+        Parameters
+        ----------
+        tokenizer:
+            Reuse an existing tokenizer instead of downloading a new
+            one. Must belong to the same model as
+            ``training_config.model_name``.
         """
 
         quantization_config = QuantizationFactory.create(
             self.qlora_config,
         )
 
-        tokenizer = AutoTokenizer.from_pretrained(
-            self.training_config.model_name,
-            trust_remote_code=self.qlora_config.trust_remote_code,
-        )
+        if tokenizer is None:
+            tokenizer = AutoTokenizer.from_pretrained(
+                self.training_config.model_name,
+                trust_remote_code=self.qlora_config.trust_remote_code,
+            )
 
         if tokenizer.pad_token is None:
             tokenizer.pad_token = tokenizer.eos_token

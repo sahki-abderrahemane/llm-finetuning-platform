@@ -60,6 +60,18 @@ class ExperimentRunner:
             self.tracker.checkpoint_dir(),
         )
 
+        metrics: dict[str, float] = {}
+
+        try:
+            metrics.update(
+                self.trainer.evaluate(),
+            )
+
+        except Exception as error:
+            print(
+                f"Evaluation skipped ({error})."
+            )
+
         finished = datetime.utcnow()
 
         result = ExperimentResult(
@@ -72,7 +84,7 @@ class ExperimentRunner:
                 finished - started
             ).total_seconds(),
             checkpoint_dir=self.tracker.checkpoint_dir(),
-            metrics={},
+            metrics=metrics,
         )
 
         self.tracker.save_metrics(

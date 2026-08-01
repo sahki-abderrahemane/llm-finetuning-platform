@@ -6,9 +6,6 @@ from __future__ import annotations
 
 import multiprocessing as mp
 
-from vllm import LLM
-from vllm import SamplingParams
-
 from mentorai_finetuning.deployment.backend.base import (
     BaseInferenceBackend,
 )
@@ -44,6 +41,13 @@ class VLLMBackend(
 
 
         #
+        # vLLM is a heavy optional dependency. Import it lazily so the
+        # package and the FastAPI app import cleanly on machines
+        # without vLLM / a GPU installed.
+        #
+        from vllm import LLM  # type: ignore[import-not-found]
+
+        #
         # Must happen before vLLM creates workers.
         #
         try:
@@ -60,7 +64,10 @@ class VLLMBackend(
             model=config.model_name,
             trust_remote_code=config.trust_remote_code,
             dtype=config.torch_dtype,
-            device="cpu",
+            enforce_eager=True,
+            gpu_memory_utilization=(
+                config.gpu_memory_utilization
+            ),
         )
 
 
@@ -86,6 +93,7 @@ class VLLMBackend(
             )
         )
 
+        from vllm import SamplingParams  # type: ignore[import-not-found]
 
         sampling_params = SamplingParams(
             temperature=self.config.temperature,

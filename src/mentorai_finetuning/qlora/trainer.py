@@ -43,6 +43,7 @@ class QLoRATrainer:
         self,
         train_dataset: Dataset,
         tokenizer: PreTrainedTokenizerBase,
+        eval_dataset: Dataset | None = None,
     ):
         """
         Build a complete QLoRA trainer.
@@ -53,7 +54,9 @@ class QLoRATrainer:
             self.qlora_config,
         )
 
-        model, _ = loader.load()
+        model, _ = loader.load(
+            tokenizer=tokenizer,
+        )
 
         model = QLoRAPreparer.prepare(
             model,
@@ -77,7 +80,7 @@ class QLoRATrainer:
             model=model,
             tokenizer=tokenizer,
             train_dataset=train_dataset,
-            eval_dataset=None,
+            eval_dataset=eval_dataset,
             training_args=training_args,
             config=self.training_config,
             data_collator=None,

@@ -1,24 +1,15 @@
 """
 Demonstrates the deployment pipeline.
 """
+
 from __future__ import annotations
 
-import multiprocessing as mp
-
 from mentorai_finetuning.common.config import get_settings
-
+from mentorai_finetuning.deployment.config import DeploymentConfig
+from mentorai_finetuning.deployment.pipeline import DeploymentPipeline
 
 
 def main() -> None:
-
-    from mentorai_finetuning.deployment.config import ( 
-    DeploymentConfig,
-)
-    from mentorai_finetuning.deployment.pipeline import (
-    DeploymentPipeline,
-)
-
-
     config = DeploymentConfig(
         model_name=get_settings().MODEL_NAME,
         max_new_tokens=get_settings().MAX_NEW_TOKENS,
@@ -49,7 +40,7 @@ def main() -> None:
         print(f"Prompt: {prompt}")
         print()
 
-        response = pipeline.generate(
+        response = pipeline.generate_prompt(
             prompt,
         )
 
@@ -72,6 +63,7 @@ def main() -> None:
 
 if __name__ == "__main__":
     import multiprocessing as mp
+
     mp.set_start_method(
         "spawn",
         force=True,

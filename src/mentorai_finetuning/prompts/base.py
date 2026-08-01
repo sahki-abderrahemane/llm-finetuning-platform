@@ -51,3 +51,33 @@ class BasePromptFormatter(ABC):
             Either the formatted prompt or token IDs.
         """
         raise NotImplementedError
+
+    @abstractmethod
+    def format_messages(
+        self,
+        conversation: list[dict[str, str]],
+        *,
+        tokenize: bool = False,
+        add_generation_prompt: bool = False,
+    ) -> str | list[int]:
+        """
+        Format a raw conversation list into the model's expected prompt.
+
+        Parameters
+        ----------
+        conversation:
+            List of ``{"role", "content"}`` dictionaries.
+
+        tokenize:
+            If True, return token IDs instead of text.
+
+        add_generation_prompt:
+            Whether to append the model's generation prompt.
+            Useful during inference.
+
+        Returns
+        -------
+        str | list[int]
+            Either the formatted prompt or token IDs.
+        """
+        raise NotImplementedError

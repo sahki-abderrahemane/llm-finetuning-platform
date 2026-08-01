@@ -12,6 +12,9 @@ from transformers import (
 from mentorai_finetuning.deployment.backend.base import (
     BaseInferenceBackend,
 )
+from mentorai_finetuning.deployment.backend.ollama_backend import (
+    OllamaBackend,
+)
 from mentorai_finetuning.deployment.backend.transformers_backend import (
     TransformersBackend,
 )
@@ -53,8 +56,8 @@ class BackendFactory:
                              config=config,
                              )
             case BackendType.OLLAMA:
-                raise NotImplementedError(
-                    "Ollama backend is not implemented yet."
+                return OllamaBackend(
+                    config=config,
                 )
 
             case _:

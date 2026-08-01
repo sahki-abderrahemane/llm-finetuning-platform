@@ -49,10 +49,17 @@ class DeploymentPipeline:
         self.tokenizer = None
 
         #
-        # vLLM manages model loading internally.
-        # Loading transformers first breaks CUDA multiprocessing.
+        # vLLM manages model loading internally, and Ollama runs the
+        # model on its own server. Loading a transformers model first
+        # would be wasteful (and breaks CUDA multiprocessing for vLLM).
         #
-        if config.backend != BackendType.VLLM:
+        if config.backend in (BackendType.VLLM, BackendType.OLLAMA):
+
+            self.model = None
+            self.tokenizer = None
+            self.request_builder = None
+
+        else:
 
             self.model, self.tokenizer = (
                 DeploymentLoader(
@@ -65,11 +72,6 @@ class DeploymentPipeline:
                     self.tokenizer,
                 )
             )
-
-        else:
-
-            self.request_builder = None
-
 
         self.backend = (
             BackendFactory.create(

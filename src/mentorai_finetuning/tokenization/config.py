@@ -36,3 +36,11 @@ class TokenizerConfig(BaseModel):
     add_special_tokens: bool = True
 
     return_attention_mask: bool = True
+
+    mask_non_assistant: bool = Field(
+        default=True,
+        description=(
+            "Mask every non-assistant token with -100 when building "
+            "training labels."
+        ),
+    )

@@ -46,13 +46,27 @@ class TrainerFactory:
 
             gradient_accumulation_steps=config.gradient_accumulation_steps,
 
+            weight_decay=config.weight_decay,
+            warmup_ratio=config.warmup_ratio,
+
             logging_steps=config.logging_steps,
             save_steps=config.save_steps,
 
+            eval_strategy=(
+                "steps" if eval_dataset is not None else "no"
+            ),
+            save_strategy="steps",
+
+            eval_steps=config.evaluation_steps,
+
             max_length=config.max_sequence_length,
+
+            seed=config.seed,
 
             fp16=config.fp16,
             bf16=config.bf16,
+
+            remove_unused_columns=config.remove_unused_columns,
 
             report_to="none",
         )

@@ -38,6 +38,12 @@ class DeploymentConfig(BaseModel):
         BackendType.VLLM
     )
 
+    ollama_host: str = (
+        "http://localhost:11434"
+    )
+
+    ollama_model: str | None = None
+
     # ------------------------------------------------------------------
     # Device
     # ------------------------------------------------------------------
@@ -47,6 +53,12 @@ class DeploymentConfig(BaseModel):
     torch_dtype: str = "auto"
 
     trust_remote_code: bool = False
+
+    gpu_memory_utilization: float = Field(
+        default=0.85,
+        gt=0.0,
+        le=1.0,
+    )
 
     # ------------------------------------------------------------------
     # Generation

@@ -34,6 +34,16 @@ class AlpacaAdapter(BaseDatasetAdapter):
         input_text = sample.get("input", "").strip()
         output = sample.get("output", "").strip()
 
+        if not instruction:
+            raise ValueError(
+                f"Alpaca sample '{sample_id}' has an empty 'instruction' field."
+            )
+
+        if not output:
+            raise ValueError(
+                f"Alpaca sample '{sample_id}' has an empty 'output' field."
+            )
+
         if input_text:
             user_prompt = (
                 f"{instruction}\n\n"

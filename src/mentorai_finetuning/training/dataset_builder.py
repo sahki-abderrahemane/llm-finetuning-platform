@@ -9,6 +9,7 @@ from __future__ import annotations
 from datasets import Dataset
 
 from mentorai_finetuning.dataset.schema import DatasetSample
+from mentorai_finetuning.tokenization.schema import TokenizedSample
 
 
 class SFTDatasetBuilder:
@@ -44,6 +45,30 @@ class SFTDatasetBuilder:
         ]
 
         return Dataset.from_list(records)
+
+    def build_from_tokenized(
+        self,
+        samples: list[TokenizedSample],
+    ) -> Dataset:
+        """
+        Build a Hugging Face Dataset from pre-tokenized samples.
+
+        The resulting records contain the ``input_ids``, ``attention_mask``
+        and ``labels`` columns expected by the trainer. Because the dataset
+        is already tokenized, TRL's ``SFTTrainer`` skips its own formatting
+        and uses the provided ``data_collator`` as-is.
+        """
+
+        return Dataset.from_list(
+            [
+                {
+                    "input_ids": sample.input_ids,
+                    "attention_mask": sample.attention_mask,
+                    "labels": sample.labels,
+                }
+                for sample in samples
+            ]
+        )
 
     def build_from_dicts(
         self,
