@@ -1,15 +1,19 @@
 # MentorAI LLM Fine-Tuning
 
 > End-to-end domain-specific LLM fine-tuning project for Ai applications.
+> End-to-end domain-specific LLM fine-tuning project for Ai applications.
 
 ## Overview
 
 This repository documents the complete engineering process of building, training, evaluating, and deploying a domain-specific Large Language Model (LLM).
 
 The primary objective is to understand every stage of the LLM fine-tuning lifecycle while producing a production-quality model that will be integrated into Ai applications.
+The primary objective is to understand every stage of the LLM fine-tuning lifecycle while producing a production-quality model that will be integrated into Ai applications.
 
 This repository focuses on engineering best practices, reproducibility, modularity, and experimentation rather than simply fine-tuning a model.
+This repository focuses on engineering best practices, reproducibility, modularity, and experimentation rather than simply fine-tuning a model.
 
+The final goal is to successfully fine-tune a **7B parameter instruction model** using **QLoRA** on an **My local gpu**.
 The final goal is to successfully fine-tune a **7B parameter instruction model** using **QLoRA** on an **My local gpu**.
 
 ---
@@ -28,6 +32,7 @@ The final goal is to successfully fine-tune a **7B parameter instruction model**
 * Benchmark different training strategies.
 * Evaluate model quality using automatic and LLM-as-a-Judge metrics.
 * Export trained models for deployment.
+* Integrate the final model into other ai powered apps.
 * Integrate the final model into other ai powered apps.
 
 ---
