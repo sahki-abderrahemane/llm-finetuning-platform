@@ -72,12 +72,15 @@ class TokenizedData:
     eval_dataset: Dataset | None = None
 
 
-def build_parser() -> argparse.ArgumentParser:
+def build_parser(
+    parser: argparse.ArgumentParser | None = None,
+) -> argparse.ArgumentParser:
     """Build the training CLI argument parser."""
 
-    parser = argparse.ArgumentParser(
-        description="Fine-tune a language model on MentorAI data.",
-    )
+    if parser is None:
+        parser = argparse.ArgumentParser(
+            description="Fine-tune a language model on MentorAI data.",
+        )
 
     parser.add_argument(
         "--dataset",
@@ -329,10 +332,13 @@ def build_trainer(
     return SFTTrainingEngine(trainer)
 
 
-def main() -> None:
+def main(
+    args: argparse.Namespace | None = None,
+) -> None:
     """Execute supervised fine-tuning."""
 
-    args = build_parser().parse_args()
+    if args is None:
+        args = build_parser().parse_args()
 
     set_seed(args.seed)
 

@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "mentorai-finetuning"
-version = "0.1.0"
+version = "1.0.0"
 description = "End-to-end domain-specific LLM fine-tuning pipeline for MentorAI."
 readme = "README.md"
 requires-python = ">=3.12"
@@ -43,6 +43,9 @@ dependencies = [
     "torch>=2.4.0",
     "tqdm>=4.67.1"
 ]
+
+[project.scripts]
+mentorai-cli = "mentorai_finetuning.cli.main:main"
 
 [project.optional-dependencies]
 vllm = [
